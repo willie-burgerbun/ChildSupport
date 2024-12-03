@@ -4,6 +4,9 @@ import java.awt.event.*;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.util.JDatePickerSettings;
 import java.util.*;
 public class Main extends JFrame {
     private JTextField dateField, childSupportField, clerkFeesField, postageField;
@@ -11,27 +14,31 @@ public class Main extends JFrame {
     private JTextField a08FeesField, preCheckBalanceField, finalCheckBalanceField;
     private JTextField holdsField, releasesField;
     private JButton calculateButton, newWorksheetButton, retrieveButton, exitButton;
-    
+
     public Main() {
         setTitle("Accounting Balance Worksheet");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(0, 2, 10, 5));
-        
+
         // Initialize components
         initComponents();
-        
+
         // Add components to frame
         addComponentsToFrame();
-        
+
         // Add action listeners
         addActionListeners();
-        
+
         pack();
         setLocationRelativeTo(null);
     }
-    
+
     private void initComponents() {
-        dateField = new JTextField(15);
+        JDatePickerSettings settings = new JDatePickerSettings(new Locale("en", "US"));
+        JDatePanelImpl datePanel = new JDatePanelImpl(settings);
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+
+        // Initialize other fields
         childSupportField = new JTextField(15);
         clerkFeesField = new JTextField(15);
         postageField = new JTextField(15);
@@ -44,16 +51,16 @@ public class Main extends JFrame {
         finalCheckBalanceField = new JTextField(15);
         holdsField = new JTextField(15);
         releasesField = new JTextField(15);
-        
+
         calculateButton = new JButton("Check Balance");
         newWorksheetButton = new JButton("New Worksheet");
         retrieveButton = new JButton("Retrieve Data");
         exitButton = new JButton("Exit");
     }
-    
+
     private void addComponentsToFrame() {
-        add(new JLabel("Accounting Date (MM/dd/yyyy):"));
-        add(dateField);
+        add(new JLabel("Accounting Date:"));
+        add(datePicker); // Add the date picker to the frame
         add(new JLabel("Child Support Total:"));
         add(childSupportField);
         add(new JLabel("Clerk Fees:"));
